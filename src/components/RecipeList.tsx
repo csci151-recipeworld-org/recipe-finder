@@ -5,11 +5,15 @@ import { useRecipeContext } from "../context/RecipeContext";
 interface RecipeListProps {
   recipes?: Recipe[];
   isLoading?: boolean;
+  onToggleFavorite?: (id: string) => void;
+  onViewDetails?: (recipe: Recipe) => void;
 }
 
 export const RecipeList: React.FC<RecipeListProps> = ({
   recipes: recipesProp,
   isLoading: isLoadingProp,
+  onToggleFavorite,
+  onViewDetails,
 }) => {
   const { recipes: contextRecipes, isLoading: contextIsLoading } =
     useRecipeContext();
@@ -56,7 +60,12 @@ export const RecipeList: React.FC<RecipeListProps> = ({
       style={{ gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))" }}
     >
       {recipes.map((recipe) => (
-        <RecipeCard key={recipe.id} recipe={recipe} />
+        <RecipeCard
+          key={recipe.id}
+          recipe={recipe}
+          onToggleFavorite={onToggleFavorite}
+          onViewDetails={onViewDetails}
+        />
       ))}
     </section>
   );
