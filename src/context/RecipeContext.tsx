@@ -11,6 +11,7 @@ interface RecipeContextValue {
   recipes: Recipe[];
   addRecipe: (recipe: Recipe) => void;
   toggleFavorite: (id: string) => void;
+  deleteRecipe: (id: string) => void;
   isLoading: boolean;
   searchTerm: string;
   setSearchTerm: (term: string) => void;
@@ -41,6 +42,9 @@ export const RecipeProvider: React.FC<{ children: React.ReactNode }> = ({
     );
   }, []);
 
+  const deleteRecipe = useCallback((id: string) => {
+    setRecipes((prevRecipes) => prevRecipes.filter((recipe) => recipe.id !== id));
+  }, []);
   const getFilteredRecipes = useCallback(() => {
     return recipes.filter((recipe) => {
       const matchesSearch =
@@ -61,6 +65,7 @@ export const RecipeProvider: React.FC<{ children: React.ReactNode }> = ({
       recipes,
       addRecipe,
       toggleFavorite,
+      deleteRecipe,
       isLoading,
       searchTerm,
       setSearchTerm,
@@ -68,6 +73,7 @@ export const RecipeProvider: React.FC<{ children: React.ReactNode }> = ({
       setSelectedCategory,
       getFilteredRecipes,
     }),
+    [recipes, addRecipe, toggleFavorite, deleteRecipe, isLoading],
     [recipes, addRecipe, toggleFavorite, isLoading, searchTerm, selectedCategory, getFilteredRecipes],
   );
 
