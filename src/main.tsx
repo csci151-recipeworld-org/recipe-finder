@@ -1,26 +1,11 @@
 /// <reference types="vite/client" />
-import React, { useState } from 'react';
-import ReactDOM from 'react-dom/client';
-import type { Recipe } from './types/recipe';
-import { RecipeCreation } from './components/RecipeCreation';
-import './style.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import "./style.css";
 
-const App: React.FC = () => {
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
-
-  const handleRecipeCreate = (recipe: Recipe) => {
-    setRecipes([...recipes, recipe]);
-  };
-
-  return (
-    <div>
-      <RecipeCreation onRecipeCreate={handleRecipeCreate} />
-    </div>
-  );
-};
-
-ReactDOM.createRoot(document.getElementById('app')!).render(
+ReactDOM.createRoot(document.getElementById("app")!).render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>
+  </React.StrictMode>,
 );
