@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { RecipeCreation } from "./components/RecipeCreation";
 import { RecipeList } from "./components/RecipeList";
+import { SearchAndFilter } from "./components/SearchAndFilter";
 import { RecipeDetail } from "./components/RecipeDetail";
 import { Favorites } from "./components/Favorites";
 import { RecipeProvider, useRecipeContext } from "./context/RecipeContext";
 import type { Recipe } from "./types/recipe";
 
 const AppContent: React.FC = () => {
-  const { recipes, toggleFavorite } = useRecipeContext();
+  const { recipes, toggleFavorite, getFilteredRecipes } = useRecipeContext();
   const [currentView, setCurrentView] = useState<'home' | 'details' | 'favorites'>('home');
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
 
@@ -48,6 +49,7 @@ const AppContent: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-50 py-8 px-4">
       <div className="mx-auto w-full max-w-5xl space-y-8">
         <RecipeCreation />
+        <SearchAndFilter />
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold text-gray-900">Recipes</h2>
           <button
@@ -58,6 +60,7 @@ const AppContent: React.FC = () => {
           </button>
         </div>
         <RecipeList
+          recipes={getFilteredRecipes()}
           onToggleFavorite={toggleFavorite}
           onViewDetails={handleViewDetails}
         />
