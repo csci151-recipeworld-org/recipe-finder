@@ -5,12 +5,14 @@ interface RecipeDetailProps {
   recipe: Recipe;
   onBack: () => void;
   onToggleFavorite: (id: string) => void;
+  onEditRecipe?: (recipe: Recipe) => void;
 }
 
 export const RecipeDetail: React.FC<RecipeDetailProps> = ({
   recipe,
   onBack,
   onToggleFavorite,
+  onEditRecipe,
 }) => {
   const cookingTimeMinutes = recipe.cookingTimeMinutes ?? 30;
   const servings = recipe.servings ?? 2;
@@ -32,7 +34,7 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({
           />
 
           <div className="p-8">
-            <div className="mb-6 flex items-start justify-between">
+            <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
               <div>
                 <h1 className="mb-2 text-3xl font-bold text-gray-900">
                   {recipe.name}
@@ -41,19 +43,30 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({
                   {recipe.category}
                 </span>
               </div>
-              <button
-                onClick={() => onToggleFavorite(recipe.id)}
-                className={`rounded-lg px-4 py-2 text-sm font-semibold transition-colors ${
-                  recipe.isFavorite
-                    ? "bg-red-100 text-red-800 hover:bg-red-200"
-                    : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-                }`}
-                aria-label={
-                  recipe.isFavorite ? "Remove from favorites" : "Add to favorites"
-                }
-              >
-                {recipe.isFavorite ? "❤️ Favorited" : "🤍 Favorite"}
-              </button>
+
+              <div className="flex flex-wrap gap-2">
+                {onEditRecipe && (
+                  <button
+                    onClick={() => onEditRecipe(recipe)}
+                    className="rounded-lg bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-200"
+                  >
+                    Edit Recipe
+                  </button>
+                )}
+                <button
+                  onClick={() => onToggleFavorite(recipe.id)}
+                  className={`rounded-lg px-4 py-2 text-sm font-semibold transition-colors ${
+                    recipe.isFavorite
+                      ? "bg-red-100 text-red-800 hover:bg-red-200"
+                      : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                  }`}
+                  aria-label={
+                    recipe.isFavorite ? "Remove from favorites" : "Add to favorites"
+                  }
+                >
+                  {recipe.isFavorite ? "❤️ Favorited" : "🤍 Favorite"}
+                </button>
+              </div>
             </div>
 
             <div className="mb-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-600">

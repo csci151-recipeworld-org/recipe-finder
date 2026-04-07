@@ -2,18 +2,24 @@ import React, { useState } from "react";
 import { RecipeCreation } from "./components/RecipeCreation";
 import { RecipeList } from "./components/RecipeList";
 import { RecipeDetail } from "./components/RecipeDetail";
+import { RecipeEditor } from "./components/RecipeEditor";
 import { Favorites } from "./components/Favorites";
 import { RecipeProvider, useRecipeContext } from "./context/RecipeContext";
 import type { Recipe } from "./types/recipe";
 
 const AppContent: React.FC = () => {
-  const { recipes, toggleFavorite } = useRecipeContext();
-  const [currentView, setCurrentView] = useState<'home' | 'details' | 'favorites'>('home');
+  const { recipes, toggleFavorite, updateRecipe } = useRecipeContext();
+  const [currentView, setCurrentView] = useState<'home' | 'details' | 'favorites' | 'edit'>('home');
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
 
   const handleViewDetails = (recipe: Recipe) => {
     setSelectedRecipe(recipe);
     setCurrentView('details');
+  };
+
+  const handleEditRecipe = (recipe: Recipe) => {
+    setSelectedRecipe(recipe);
+    setCurrentView('edit');
   };
 
   const handleViewFavorites = () => {
@@ -24,12 +30,29 @@ const AppContent: React.FC = () => {
     setCurrentView('home');
   };
 
+  const handleSaveRecipe = (updatedRecipe: Recipe) => {
+    updateRecipe(updatedRecipe);
+    setSelectedRecipe(updatedRecipe);
+    setCurrentView('details');
+  };
+
+  if (currentView === 'edit' && selectedRecipe) {
+    return (
+      <RecipeEditor
+        recipe={selectedRecipe}
+        onSave={handleSaveRecipe}
+        onCancel={() => setCurrentView('details')}
+      />
+    );
+  }
+
   if (currentView === 'details' && selectedRecipe) {
     return (
       <RecipeDetail
         recipe={selectedRecipe}
         onBack={handleBack}
         onToggleFavorite={toggleFavorite}
+        onEditRecipe={handleEditRecipe}
       />
     );
   }
