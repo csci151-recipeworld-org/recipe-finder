@@ -6,4 +6,5 @@ export interface Recipe {
   category: 'Breakfast' | 'Lunch' | 'Dinner' | 'Dessert' | 'Snack' | 'Beverage';
   cookingTimeMinutes?: number;
   servings?: number;
+  isFavorite: boolean;
 }

@@ -2,9 +2,15 @@ import type { Recipe } from "../types/recipe";
 
 interface RecipeCardProps {
   recipe: Recipe;
+  onToggleFavorite?: (id: string) => void;
+  onViewDetails?: (recipe: Recipe) => void;
 }
 
-export const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
+export const RecipeCard: React.FC<RecipeCardProps> = ({
+  recipe,
+  onToggleFavorite,
+  onViewDetails,
+}) => {
   const cookingTimeMinutes = recipe.cookingTimeMinutes ?? 30;
   const servings = recipe.servings ?? 2;
 
@@ -34,6 +40,32 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
             <span className="font-semibold text-gray-800">Serves:</span>{" "}
             {servings}
           </p>
+        </div>
+
+        <div className="flex gap-2">
+          {onViewDetails && (
+            <button
+              onClick={() => onViewDetails(recipe)}
+              className="flex-1 rounded-lg bg-orange-500 px-3 py-2 text-sm font-semibold text-white hover:bg-orange-600"
+            >
+              View Details
+            </button>
+          )}
+          {onToggleFavorite && (
+            <button
+              onClick={() => onToggleFavorite(recipe.id)}
+              className={`rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
+                recipe.isFavorite
+                  ? "bg-red-100 text-red-800 hover:bg-red-200"
+                  : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+              }`}
+              aria-label={
+                recipe.isFavorite ? "Remove from favorites" : "Add to favorites"
+              }
+            >
+              {recipe.isFavorite ? "❤️" : "🤍"}
+            </button>
+          )}
         </div>
       </div>
     </article>
