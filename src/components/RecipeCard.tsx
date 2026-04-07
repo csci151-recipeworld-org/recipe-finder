@@ -1,4 +1,7 @@
 import type { Recipe } from "../types/recipe";
+import { useState } from "react";
+import { useRecipeContext } from "../context/RecipeContext";
+import { DeleteConfirmationDialog } from "./DeleteConfirmationDialog";
 
 interface RecipeCardProps {
   recipe: Recipe;
@@ -11,6 +14,28 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
   onToggleFavorite,
   onViewDetails,
 }) => {
+  const { deleteRecipe } = useRecipeContext();
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleDeleteClick = () => {
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      setIsDeleting(true);
+      deleteRecipe(recipe.id);
+    } finally {
+      setIsDeleting(false);
+      setIsDeleteDialogOpen(false);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setIsDeleteDialogOpen(false);
+  };
+
   const cookingTimeMinutes = recipe.cookingTimeMinutes ?? 30;
   const servings = recipe.servings ?? 2;
 
@@ -66,7 +91,22 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
               {recipe.isFavorite ? "❤️" : "🤍"}
             </button>
           )}
+          <button
+            onClick={handleDeleteClick}
+            className="rounded-lg bg-red-50 px-3 py-2 text-sm font-semibold text-red-700 hover:bg-red-100"
+            aria-label="Delete recipe"
+          >
+            🗑️
+          </button>
         </div>
+
+        <DeleteConfirmationDialog
+          isOpen={isDeleteDialogOpen}
+          recipeName={recipe.name}
+          onConfirm={handleConfirmDelete}
+          onCancel={handleCancelDelete}
+          isLoading={isDeleting}
+        />
       </div>
     </article>
   );
