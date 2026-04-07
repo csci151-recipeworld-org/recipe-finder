@@ -1,5 +1,5 @@
-import React from "react";
-import { useSearchAndFilter } from "../hooks/useSearchAndFilter";
+import React, { useMemo } from "react";
+import { useRecipeContext } from "../context/RecipeContext";
 import type { Recipe } from "../types/recipe";
 
 const CATEGORIES: Array<"All" | Recipe["category"]> = [
@@ -18,8 +18,22 @@ export const SearchAndFilter: React.FC = () => {
     setSearchTerm,
     selectedCategory,
     setSelectedCategory,
-    stats,
-  } = useSearchAndFilter();
+    recipes,
+    getFilteredRecipes,
+  } = useRecipeContext();
+
+  const filteredRecipes = getFilteredRecipes();
+
+  const stats = useMemo(
+    () => ({
+      totalRecipes: recipes.length,
+      filteredRecipesCount: filteredRecipes.length,
+      isSearchActive: searchTerm.length > 0,
+      isFilterActive: selectedCategory !== "All",
+      hasResults: filteredRecipes.length > 0,
+    }),
+    [recipes.length, filteredRecipes.length, searchTerm, selectedCategory]
+  );
 
   const handleClearFilters = () => {
     setSearchTerm("");
