@@ -9,10 +9,8 @@ import { RecipeProvider, useRecipeContext } from "./context/RecipeContext";
 import type { Recipe } from "./types/recipe";
 
 const AppContent: React.FC = () => {
-  const { recipes, toggleFavorite, updateRecipe } = useRecipeContext();
+  const { recipes, toggleFavorite, updateRecipe, getFilteredRecipes } = useRecipeContext();
   const [currentView, setCurrentView] = useState<'home' | 'details' | 'favorites' | 'edit'>('home');
-  const { recipes, toggleFavorite, getFilteredRecipes } = useRecipeContext();
-  const [currentView, setCurrentView] = useState<'home' | 'details' | 'favorites'>('home');
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
 
   const handleViewDetails = (recipe: Recipe) => {
