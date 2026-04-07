@@ -11,6 +11,7 @@ interface RecipeContextValue {
   recipes: Recipe[];
   addRecipe: (recipe: Recipe) => void;
   toggleFavorite: (id: string) => void;
+  deleteRecipe: (id: string) => void;
   isLoading: boolean;
 }
 
@@ -34,14 +35,19 @@ export const RecipeProvider: React.FC<{ children: React.ReactNode }> = ({
     );
   }, []);
 
+  const deleteRecipe = useCallback((id: string) => {
+    setRecipes((prevRecipes) => prevRecipes.filter((recipe) => recipe.id !== id));
+  }, []);
+
   const value = useMemo(
     () => ({
       recipes,
       addRecipe,
       toggleFavorite,
+      deleteRecipe,
       isLoading,
     }),
-    [recipes, addRecipe, toggleFavorite, isLoading],
+    [recipes, addRecipe, toggleFavorite, deleteRecipe, isLoading],
   );
 
   return (
