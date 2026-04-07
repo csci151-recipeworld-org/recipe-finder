@@ -10,6 +10,7 @@ import type { Recipe } from "../types/recipe";
 interface RecipeContextValue {
   recipes: Recipe[];
   addRecipe: (recipe: Recipe) => void;
+  updateRecipe: (updatedRecipe: Recipe) => void;
   toggleFavorite: (id: string) => void;
   deleteRecipe: (id: string) => void;
   isLoading: boolean;
@@ -32,6 +33,14 @@ export const RecipeProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const addRecipe = useCallback((recipe: Recipe) => {
     setRecipes((prevRecipes) => [...prevRecipes, { ...recipe, isFavorite: false }]);
+  }, []);
+
+  const updateRecipe = useCallback((updatedRecipe: Recipe) => {
+    setRecipes((prevRecipes) =>
+      prevRecipes.map((recipe) =>
+        recipe.id === updatedRecipe.id ? { ...updatedRecipe } : recipe
+      )
+    );
   }, []);
 
   const toggleFavorite = useCallback((id: string) => {
@@ -64,6 +73,7 @@ export const RecipeProvider: React.FC<{ children: React.ReactNode }> = ({
     () => ({
       recipes,
       addRecipe,
+      updateRecipe,
       toggleFavorite,
       deleteRecipe,
       isLoading,
@@ -73,6 +83,7 @@ export const RecipeProvider: React.FC<{ children: React.ReactNode }> = ({
       setSelectedCategory,
       getFilteredRecipes,
     }),
+    [recipes, addRecipe, updateRecipe, toggleFavorite, isLoading],
     [recipes, addRecipe, toggleFavorite, deleteRecipe, isLoading],
     [recipes, addRecipe, toggleFavorite, isLoading, searchTerm, selectedCategory, getFilteredRecipes],
   );
