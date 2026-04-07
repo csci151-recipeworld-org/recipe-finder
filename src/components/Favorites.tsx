@@ -49,11 +49,15 @@ export const Favorites: React.FC<FavoritesProps> = ({
             }}
           >
             {favoriteRecipes.map((recipe) => (
-              <RecipeCard 
-                key={recipe.id}
-                recipe={recipe}
-                onViewDetails={onViewDetails}
-              />
+              <div key={recipe.id} className="relative">
+                <RecipeCard recipe={recipe} />
+                <button
+                  onClick={() => onViewDetails(recipe)}
+                  className="absolute bottom-4 left-4 right-4 rounded-lg bg-orange-500 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-600"
+                >
+                  View Details
+                </button>
+              </div>
             ))}
           </section>
         )}
