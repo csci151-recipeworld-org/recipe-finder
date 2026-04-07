@@ -1,15 +1,21 @@
 import type { Recipe } from "../types/recipe";
 import { RecipeCard } from "./RecipeCard";
+import { useRecipeContext } from "../context/RecipeContext";
 
 interface RecipeListProps {
-  recipes: Recipe[];
+  recipes?: Recipe[];
   isLoading?: boolean;
 }
 
 export const RecipeList: React.FC<RecipeListProps> = ({
-  recipes,
-  isLoading = false,
+  recipes: recipesProp,
+  isLoading: isLoadingProp,
 }) => {
+  const { recipes: contextRecipes, isLoading: contextIsLoading } =
+    useRecipeContext();
+  const recipes = recipesProp ?? contextRecipes;
+  const isLoading = isLoadingProp ?? contextIsLoading;
+
   if (isLoading) {
     return (
       <section
