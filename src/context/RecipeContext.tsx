@@ -10,6 +10,7 @@ import type { Recipe } from "../types/recipe";
 interface RecipeContextValue {
   recipes: Recipe[];
   addRecipe: (recipe: Recipe) => void;
+  toggleFavorite: (id: string) => void;
   isLoading: boolean;
 }
 
@@ -22,16 +23,25 @@ export const RecipeProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isLoading] = useState(false);
 
   const addRecipe = useCallback((recipe: Recipe) => {
-    setRecipes((prevRecipes) => [...prevRecipes, recipe]);
+    setRecipes((prevRecipes) => [...prevRecipes, { ...recipe, isFavorite: false }]);
+  }, []);
+
+  const toggleFavorite = useCallback((id: string) => {
+    setRecipes((prevRecipes) =>
+      prevRecipes.map((recipe) =>
+        recipe.id === id ? { ...recipe, isFavorite: !recipe.isFavorite } : recipe
+      )
+    );
   }, []);
 
   const value = useMemo(
     () => ({
       recipes,
       addRecipe,
+      toggleFavorite,
       isLoading,
     }),
-    [recipes, addRecipe, isLoading],
+    [recipes, addRecipe, toggleFavorite, isLoading],
   );
 
   return (

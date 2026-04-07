@@ -46,5 +46,6 @@ export const createRecipe = (formData: FormData): Recipe => {
     ingredients: parseIngredients(formData.ingredients),
     instructions: formData.instructions.trim(),
     category: formData.category,
+    isFavorite: false,
   };
 };
