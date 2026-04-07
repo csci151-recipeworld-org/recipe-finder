@@ -83,9 +83,7 @@ export const RecipeProvider: React.FC<{ children: React.ReactNode }> = ({
       setSelectedCategory,
       getFilteredRecipes,
     }),
-    [recipes, addRecipe, updateRecipe, toggleFavorite, isLoading],
-    [recipes, addRecipe, toggleFavorite, deleteRecipe, isLoading],
-    [recipes, addRecipe, toggleFavorite, isLoading, searchTerm, selectedCategory, getFilteredRecipes],
+    [recipes, addRecipe, updateRecipe, toggleFavorite, deleteRecipe, isLoading, searchTerm, selectedCategory, getFilteredRecipes],
   );
 
   return (
